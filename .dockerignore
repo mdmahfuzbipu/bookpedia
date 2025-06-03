@@ -1,0 +1,41 @@
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Ignore local database
+*.sqlite3
+*.db
+
+# Ignore git stuff
+.git/
+.gitignore
+
+# Ignore IDE/editor configs
+.vscode/
+.idea/
+
+# Ignore OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Ignore dotenv files (don't copy secrets into image)
+.env
+
+# Ignore test data or coverage
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Ignore build artifacts
+*.egg-info
+dist/
+build/
