@@ -1,15 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
+from django.contrib.auth.forms import AdminUserCreationForm, UserCreationForm, UserChangeForm
 
-
-class CustomUserCreationForm(AdminUserCreationForm):
+# For frontend signup
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = (
             "email",
             "username",
         )
-        
+
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
@@ -18,3 +18,13 @@ class CustomUserChangeForm(UserChangeForm):
             "email",
             "username",
         )
+
+# For Django Admin
+class CustomAdminUserCreationForm(AdminUserCreationForm):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            "email",
+            "username",
+        )
+
