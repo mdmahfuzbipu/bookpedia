@@ -1,18 +1,86 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}BookPedia{% endblock title %}</title>
 
-
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+    <!--Static file link-->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
 </head>
 <body>
+
+    
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">BookPedia</a>
+      
+          <!-- Toggler for small screens -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <!-- Navbar content -->
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <!-- Left-aligned nav items -->
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+              </li>
+            </ul>
+      
+            <!-- Right-aligned auth buttons -->
+            <ul class="navbar-nav mb-2 mb-md-0">
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger ms-2">Log Out</button>
+                </form>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="btn btn-success me-2" href="{% url 'login' %}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+    
+
+
+
+
     <div class="container">
         {% block content %}
         {% endblock content %}
     </div>
+
+
+
+    <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoY9V6M5w5ka7E6w5e2q4nUJJyUYJd/2nGpGFF93hXpG5Kk" 
+    crossorigin="anonymous"></script>
+
+
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/base.js' %}"></script>
+
 </body>
 </html>
