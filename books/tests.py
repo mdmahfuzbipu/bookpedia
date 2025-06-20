@@ -3,8 +3,10 @@ from datetime import date
 
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
-from .models import Book
+from .models import Book, Review
+
 # Create your tests here.
 
 
@@ -12,6 +14,12 @@ class BookTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="reviewuser",
+            email="reviewuser@email.com",
+            password="testpass123",
+        )
+        
         cls.book = Book.objects.create(
             id=uuid.uuid4(),  
             title="Harry Potter and the Philosopher's Stone",
@@ -22,6 +30,12 @@ class BookTests(TestCase):
             rating=4.9,
             language="English",
             genre="Fantasy",
+        )
+        
+        cls.review = Review.objects.create(
+            book=cls.book,
+            author=cls.user,
+            review="Excellent Book",
         )
     
     def test_book_str_method(self):
@@ -56,4 +70,5 @@ class BookTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, html.escape(self.book.title))
         self.assertTemplateUsed(response, "books/book_detail.html")
+        self.assertContains(response, "Excellent Book")
         self.assertEqual(no_response.status_code, 404)
