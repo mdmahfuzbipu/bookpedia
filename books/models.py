@@ -20,6 +20,7 @@ class Book(models.Model):
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     language = models.CharField(max_length=30, blank=True)
     genre = models.CharField(max_length=50, blank=True)
+    cover = models.ImageField(upload_to="covers/", blank=True, null=True)
     
     def __repr__(self):
         return f"<Book {self.title} by {self.author}>"
