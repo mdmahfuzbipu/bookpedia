@@ -22,6 +22,11 @@ class Book(models.Model):
     genre = models.CharField(max_length=50, blank=True)
     cover = models.ImageField(upload_to="covers/", blank=True, null=True)
     
+    class Meta:
+        permissions = [
+            ("special_status", "Can read all books"),
+        ]
+    
     def __repr__(self):
         return f"<Book {self.title} by {self.author}>"
     

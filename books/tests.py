@@ -4,6 +4,7 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 
 from .models import Book, Review
 
@@ -18,6 +19,10 @@ class BookTests(TestCase):
             username="reviewuser",
             email="reviewuser@email.com",
             password="testpass123",
+        )
+        
+        cls.special_permission = Permission.objects.get(
+            codename="special_status",
         )
         
         cls.book = Book.objects.create(
@@ -56,15 +61,32 @@ class BookTests(TestCase):
         self.assertEqual(self.book.language, "English")
         self.assertEqual(self.book.genre, "Fantasy")
 
-    def test_book_list_view(self):
+    def test_book_list_view_for_logged_in_user(self):
         """Test that book list view shows the book"""
+        self.client.login(email="reviewuser@email.com", password="testpass123")
         response = self.client.get(reverse("book_list"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, html.escape(self.book.title))
         self.assertTemplateUsed(response, "books/book_list.html")
+        
+        
+    def test_book_list_view_for_logged_out_user(self):
+        """Test that book list view shows the book"""
+        self.client.logout()
+        response = self.client.get(reverse("book_list"))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            "%s?next=/books/" % (reverse("account_login")))
+        response = self.client.get(
+                "%s?next=/books/" % (reverse("account_login")))
+        self.assertContains(response, "Log In")
+    
 
-    def test_book_detail_view(self):
+    def test_book_detail_view_with_permissions(self):
         """Test the book detail view"""
+        self.client.login(email="reviewuser@email.com", password="testpass123")
+        self.user.user_permissions.add(self.special_permission)
         response = self.client.get(self.book.get_absolute_url())
         no_response = self.client.get("/books/00000000-0000-0000-0000-000000000000/")  # fake UUID
         self.assertEqual(response.status_code, 200)
