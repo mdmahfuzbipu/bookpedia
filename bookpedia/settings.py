@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "anymail",  # For email sending
+    "anymail",
+    "debug_toolbar",  
     # Local
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
@@ -107,6 +108,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 # LOGOUT_REDIRECT_URL = "home"
 
 MIDDLEWARE = [
+    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -114,9 +116,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Add the account middleware:
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.middleware.cache.FetchFromCacheMiddleware",
+    # Custom middleware for allauth
     "allauth.account.middleware.AccountMiddleware",
 ]
+
+
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 604800
+CACHE_MIDDLEWARE_KEY_PREFIX = ""
 
 ROOT_URLCONF = "bookpedia.urls"
 
@@ -180,6 +189,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+# django-debug-toolbar
+import socket
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
