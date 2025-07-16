@@ -1,18 +1,43 @@
 {% extends "_base.html" %}
+{% load static %}
 
 {% block title %}Search{% endblock title %}
 
 {% block content %}
+  <h1 class="mb-4">Search Results for "{{ query }}"</h1>
 
-    <h1>Search Results for "{{ query }}"</h1>
-
-    {% for book in book_list %}
-        <div class="card mb-3 p-3">
-        <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
-        <p>Author: {{ book.author }}</p>
-        <p>Category: {{ book.category.name }}</p>
+  {% if book_list %}
+    <div class="row">
+      {% for book in book_list %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            
+            <!-- Book Cover -->
+            {% if book.cover %}
+              <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
+            {% else %}
+              <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="No Cover">
+            {% endif %}
+            
+            <!-- Book Info -->
+            <div class="card-body">
+              <h5 class="card-title">{{ book.title }}</h5>
+              <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+              
+              {% if book.category %}
+                <p class="card-text"><span class="badge bg-secondary">{{ book.category.name }}</span></p>
+              {% endif %}
+              
+              <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+              <p class="card-text"><strong>Rating:</strong> {{ book.rating }}</p>
+              
+              <a href="{{ book.get_absolute_url }}" class="btn btn-sm btn-primary mt-2">View Details</a>
+            </div>
+          </div>
         </div>
-    {% empty %}
-        <p>No matching books found.</p>
-    {% endfor %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No matching books found.</p>
+  {% endif %}
 {% endblock content %}
