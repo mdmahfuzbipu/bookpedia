@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% load static %}
-
+{% load star_tags %}
 
 {% block title %}{{ book.title }}{% endblock title %}
 
@@ -22,7 +22,9 @@
       <div class="card p-4 shadow-sm h-100">
         <h2 class="card-title">{{ book.title }}</h2>
         <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
-        <p class="card-text"><strong>Rating:</strong> {{ book.rating }}</p>
+        <p class="card-text"><strong>Rating:</strong> {{ book.rating }}  
+            <span class="fs-5">{{ book.rating|star_rating }}</span>
+        </p>
         <p class="card-text"><strong>Price:</strong> <span class="text-success">${{ book.price }}</span></p>
         <p class="card-text"><strong>Published:</strong> {{ book.published_date }}</p>
         <p class="card-text"><strong>Genre:</strong> {{ book.genre }}</p>
@@ -62,5 +64,18 @@
     {% else %}
       <p class="text-muted mt-3">No reviews yet. Be the first to review this book!</p>
     {% endif %}
+
+    <!-- Leave a Review -->
+    <div class="mt-5">
+    <h4>Leave a Review</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.review.label_tag }}
+            {{ form.review }}
+            <button type="submit" class="btn btn-success mt-2">
+            Submit Review
+            </button>
+        </form>
+    </div>
   </div>
 {% endblock content %}

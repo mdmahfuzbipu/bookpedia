@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
 {% load static %}
+{% load star_tags %}
 
 {% block title %}Search{% endblock title %}
 
@@ -28,8 +29,10 @@
                 <p class="card-text"><span class="badge bg-secondary">{{ book.category.name }}</span></p>
               {% endif %}
               
+              <p class="card-text"><strong>Rating:</strong> {{ book.rating }}  
+                <span class="fs-5">{{ book.rating|star_rating }}</span>
+              </p>
               <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
-              <p class="card-text"><strong>Rating:</strong> {{ book.rating }}</p>
               
               <a href="{{ book.get_absolute_url }}" class="btn btn-sm btn-primary mt-2">View Details</a>
             </div>
