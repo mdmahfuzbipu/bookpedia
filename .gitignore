@@ -57,3 +57,5 @@ dist/
 
 # Docker
 *.pid
+
+docker-compose-prod.yml

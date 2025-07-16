@@ -3,9 +3,34 @@
 {% block title %}Books{% endblock title %}
 
 {% block content %}
-    {% for book in book_list %}
-        <div>
-            <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
-        </div>
-    {% endfor %}
+  <h1>All Books</h1>
+
+  <!-- Search form -->
+  <form method="get" action="{% url 'search_results' %}" class="mb-3">
+    <input type="text" name="q" placeholder="Search books..." class="form-control" style="max-width: 300px; display: inline;">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <!-- Category filter -->
+  <form method="get" class="mb-3">
+    <select name="category" onchange="this.form.submit()" class="form-select" style="max-width: 300px;">
+      <option value="">All Categories</option>
+      {% for category in categories %}
+        <option value="{{ category.slug }}" {% if category.slug == current_category %}selected{% endif %}>
+          {{ category.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </form>
+
+  <!-- Book list -->
+  {% for book in book_list %}
+    <div class="card mb-3 p-3">
+      <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
+      <p>Author: {{ book.author }}</p>
+      <p>Category: {{ book.category.name }}</p>
+    </div>
+  {% empty %}
+    <p>No books found in this category.</p>
+  {% endfor %}
 {% endblock content %}

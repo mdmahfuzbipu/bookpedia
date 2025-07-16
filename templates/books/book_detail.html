@@ -15,7 +15,11 @@
         <p>Published: {{ book.published_date }}</p>
         <p>Genre: {{ book.genre }}</p>
         <p>Description: {{ book.description }}</p>
-        
+        {% if book.amazon_link %}
+            <a href="{{ book.amazon_link }}" target="_blank" class="btn btn-warning" rel="noopener noreferrer">
+                Buy on Amazon
+            </a>
+        {% endif %}
         <div>
             <h3>Reviews</h3>
             <ul>

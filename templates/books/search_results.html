@@ -4,16 +4,15 @@
 
 {% block content %}
 
-    <h1>Search Results</h1>
+    <h1>Search Results for "{{ query }}"</h1>
 
     {% for book in book_list %}
-
-        <div>
-            <h3><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
-            <p>Author: {{ book.author }}</p>
-            <p>Price: $ {{ book.price }}</p>
+        <div class="card mb-3 p-3">
+        <h2><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h2>
+        <p>Author: {{ book.author }}</p>
+        <p>Category: {{ book.category.name }}</p>
         </div>
-
+    {% empty %}
+        <p>No matching books found.</p>
     {% endfor %}
-
 {% endblock content %}

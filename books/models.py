@@ -2,8 +2,23 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 
 # Create your models here.
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 
 class Book(models.Model):
     id = models.UUIDField(
@@ -21,7 +36,13 @@ class Book(models.Model):
     language = models.CharField(max_length=30, blank=True)
     genre = models.CharField(max_length=50, blank=True)
     cover = models.ImageField(upload_to="covers/", blank=True, null=True)
-    
+    amazon_link = models.URLField(
+        blank=True, null=True, help_text="Paste Amazon product link here"
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
     class Meta:
         indexes = [
             models.Index(fields=["title"]),
@@ -31,16 +52,16 @@ class Book(models.Model):
         permissions = [
             ("special_status", "Can read all books"),
         ]
-    
+
     def __repr__(self):
         return f"<Book {self.title} by {self.author}>"
-    
+
     def __str__(self):
         return f"{self.title} by {self.author}"
-    
+
     def get_absolute_url(self):
         return reverse("book_detail", args=[str(self.id)])
-    
+
 
 class Review(models.Model):
     book = models.ForeignKey(
