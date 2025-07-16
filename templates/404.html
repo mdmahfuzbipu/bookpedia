@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+{% block title %}Page Not Found{% endblock %}
+
+
+{% block content %}
+    <div class="text-center mt-5">
+        <h1 class="display-4">404</h1>
+        <p class="lead">Oops! Page not found.</p>
+        <a href="{% url 'book_list' %}" class="btn btn-primary">Go Home</a>
+    </div>
+{% endblock %}

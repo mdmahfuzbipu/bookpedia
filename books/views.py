@@ -12,6 +12,7 @@ from .models import Book, Category
 
 class BookListView(LoginRequiredMixin,ListView):
     model = Book
+    paginate_by = 6
     context_object_name = "book_list"
     template_name = "books/book_list.html"
     login_url = "account_login"
@@ -22,7 +23,7 @@ class BookListView(LoginRequiredMixin,ListView):
         if category_slug:
             queryset = queryset.filter(category__slug=category_slug)
         return queryset
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["categories"] = Category.objects.all()
