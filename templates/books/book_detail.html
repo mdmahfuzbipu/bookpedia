@@ -3,32 +3,44 @@
 {% block title %}{{ book.title }}{% endblock title %}
 
 {% block content %}
-    <div class="book-detail">
-        {% if book.cover %}
-            <img class="bookcover" src="{{ book.cover.url }}" alt="{{ book.title }}">
-        {% endif %}
-
-        <h2><a href="">{{ book.title }}</a></h2>
-        <p>Author: {{ book.author }}</p>
-        <p>Rating: {{ book.rating }}</p>
-        <p>Price: {{ book.price }}</p>
-        <p>Published: {{ book.published_date }}</p>
-        <p>Genre: {{ book.genre }}</p>
-        <p>Description: {{ book.description }}</p>
-        {% if book.amazon_link %}
-            <a href="{{ book.amazon_link }}" target="_blank" class="btn btn-warning" rel="noopener noreferrer">
-                Buy on Amazon
-            </a>
-        {% endif %}
-        <div>
-            <h3>Reviews</h3>
-            <ul>
-                {% for review in book.reviews.all %}
-                    <li>{{ review.review }} ({{ review.author }})</li>
-                {% endfor %}
-            </ul>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      {% if book.cover %}
+        <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-fluid rounded shadow-sm mb-4">
+      {% endif %}
     </div>
+    <div class="col-md-6">
+      <h2>{{ book.title }}</h2>
+      <p><strong>Author:</strong> {{ book.author }}</p>
+      <p><strong>Rating:</strong> {{ book.rating }}</p>
+      <p><strong>Price:</strong> ${{ book.price }}</p>
+      <p><strong>Published:</strong> {{ book.published_date }}</p>
+      <p><strong>Genre:</strong> {{ book.genre }}</p>
+      <p><strong>Description:</strong><br>{{ book.description }}</p>
 
-    <p><a href="{% url 'book_list' %}">Back to Book List</a></p>
+      {% if book.amazon_link %}
+        <a href="{{ book.amazon_link }}" target="_blank" class="btn btn-warning mt-2" rel="noopener noreferrer">
+          Buy on Amazon
+        </a>
+      {% endif %}
+
+      <a href="{% url 'book_list' %}" class="btn btn-outline-secondary mt-3">← Back to Book List</a>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="mt-5">
+    <h4>Reviews</h4>
+    {% if book.reviews.all %}
+      <ul class="list-group">
+        {% for review in book.reviews.all %}
+          <li class="list-group-item">
+            <strong>{{ review.author }}:</strong> {{ review.review }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No reviews yet.</p>
+    {% endif %}
+  </div>
 {% endblock content %}
