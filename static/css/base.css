@@ -24,3 +24,21 @@ img.bookcover {
     line-height: 1.5;
     border-radius: 0.25rem;
 }
+
+
+footer i.bi {
+  font-size: 1.3rem;
+  color: white;
+  transition: color 0.3s ease;
+}
+footer a:hover i.bi {
+  color: #ffc107; 
+}
+
+.container {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}

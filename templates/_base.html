@@ -1,3 +1,4 @@
+{% load tz %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -17,7 +18,7 @@
     
     <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    
+
     <!--Static file link-->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link href="{% static 'css/dark-theme.css' %}" rel="stylesheet">
@@ -120,6 +121,58 @@
           {% block content %}
           {% endblock content %}
       </div>
+
+
+
+      <!-- Footer -->
+      <footer class="bg-dark text-light mt-5 pt-5 pb-4">
+        <div class="container text-center text-md-start">
+          <div class="row">
+            <!-- Logo & Description -->
+            <div class="col-md-4 mb-4">
+              <h5 class="text-uppercase fw-bold mb-3">BookPedia</h5>
+              <p class="small text-light">
+                Your digital bookshelf to explore, track, and share amazing reads. Built with Django & Bootstrap.
+              </p>
+            </div>
+
+            <!-- Quick Links with Icons -->
+            <div class="col-md-4 mb-4">
+              <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+              <ul class="list-unstyled small">
+                <li class="mb-2">
+                  <a href="{% url 'home' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-house-door-fill me-2"></i> Home
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a href="{% url 'book_list' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-book-half me-2"></i> Books
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a href="{% url 'about' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-info-circle-fill me-2"></i> About
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="col-md-4 mb-4">
+              <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
+              <a href="#" class="text-light fs-5 me-3" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="text-light fs-5 me-3" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="text-light fs-5" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+
+          <hr class="border-secondary">
+          <div class="text-center small">
+            &copy; {% now "Y" %} BookPedia. All rights reserved.
+          </div>
+        </div>
+      </footer>
 
 
 
