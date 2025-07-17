@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.urls import reverse_lazy
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
+    UserPassesTestMixin,
 )
 
-from .models import Book, Category
+from .models import Book, Category, Review
 from .forms import ReviewForm
 # Create your views here.
 
@@ -29,7 +32,7 @@ class BookListView(LoginRequiredMixin,ListView):
         context["categories"] = Category.objects.all()
         context["current_category"] = self.request.GET.get('category')
         return context
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = ReviewForm(request.POST)
@@ -38,6 +41,7 @@ class BookListView(LoginRequiredMixin,ListView):
             review.book = self.object
             review.author = request.user
             review.save()
+            messages.success(request, "Review submitted successfully!")
             return redirect("book_detail", pk=self.object.pk)
         context = self.get_context_data()
         context["form"] = form
@@ -59,7 +63,7 @@ class BookDetailView(
         context = super().get_context_data(**kwargs)
         context["form"] = ReviewForm()
         return context
-    
+
 
 class SearchResultsListView(ListView):
     model = Book
@@ -76,3 +80,33 @@ class SearchResultsListView(ListView):
         context = super().get_context_data(**kwargs)
         context["query"] = self.request.GET.get("q")
         return context
+
+
+class EditReviewView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = "books/edit_review.html"
+
+    def form_valid(self, form):
+        messages.success(self.request, "Review updated successfully!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.object.book.get_absolute_url()
+
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.author
+
+
+class DeleteReviewView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Review
+    template_name = "books/delete_review.html"
+
+    def get_success_url(self):
+        messages.success(self.request, "Review deleted successfully!")
+        return self.object.book.get_absolute_url()
+
+    def test_func(self):
+        review = self.get_object()
+        return self.request.user == review.author
