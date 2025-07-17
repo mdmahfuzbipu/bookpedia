@@ -5,22 +5,57 @@
 {% block content %}
 <div class="container mt-5 pt-5">
     <div class="row justify-content-center text-center">
-        <div class="col-md-8">
-            <h1 class="display-4 mb-4">About BookPedia</h1>
-            <p class="lead text-muted">
-                BookPedia is a platform dedicated to book lovers who want to discover, share, and explore books from all genres. 
-                Whether you're an avid reader or a casual explorer, BookPedia aims to be your digital bookshelf and community.
+        <div class="col-md-10 col-lg-8">
+            <h1 class="display-4 mb-4 fw-bold">About <span class="text-primary">BookPedia</span></h1>
+            <p class="lead text-muted mb-5">
+                BookPedia is a platform crafted for book lovers who want to discover, explore, and share amazing reads across genres.
+                Whether you're an avid reader or a curious explorer, BookPedia is your digital library and reading companion.
             </p>
-            <hr class="my-4">
-            <h3 class="mb-3">What We Offer</h3>
-            <ul class="list-group list-group-flush text-start">
-                <li class="list-group-item">📚 Curated book lists and recommendations</li>
-                <li class="list-group-item">📝 Community reviews and ratings</li>
-                <li class="list-group-item">🔍 Easy search and discovery</li>
-                <li class="list-group-item">🧾 Personalized reading experience</li>
-            </ul>
-            <hr class="my-4">
-            <p class="text-muted">Built with 💙 using Django and Bootstrap 5.</p>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <h3 class="mb-3 text-start">What We Offer</h3>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-4 h-100 text-start shadow-sm bg-light-subtle">
+                        <i class="bi bi-book-half fs-2 text-primary mb-3"></i>
+                        <h5 class="fw-semibold">Curated Book Lists</h5>
+                        <p class="text-muted mb-0">Handpicked recommendations tailored to your interests.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-4 h-100 text-start shadow-sm bg-light-subtle">
+                        <i class="bi bi-chat-left-text fs-2 text-success mb-3"></i>
+                        <h5 class="fw-semibold">Community Reviews</h5>
+                        <p class="text-muted mb-0">Read and contribute genuine reviews from fellow readers.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-4 h-100 text-start shadow-sm bg-light-subtle">
+                        <i class="bi bi-search fs-2 text-warning mb-3"></i>
+                        <h5 class="fw-semibold">Powerful Search</h5>
+                        <p class="text-muted mb-0">Find any book quickly with advanced filters and search tools.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-4 h-100 text-start shadow-sm bg-light-subtle">
+                        <i class="bi bi-person-heart fs-2 text-danger mb-3"></i>
+                        <h5 class="fw-semibold">Personalized Experience</h5>
+                        <p class="text-muted mb-0">Track your reading journey and get personalized suggestions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <p class="text-muted">
+                Built with <i class="bi bi-heart-fill text-danger"></i> using 
+                <strong>Django</strong> and <strong>Bootstrap 5</strong>.
+            </p>
         </div>
     </div>
 </div>

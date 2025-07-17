@@ -22,16 +22,12 @@
     border: 1px solid #333;
   }
 
-  .btn {
-    background-color: #333;
-    color: #f1f1f1;
-    border-color: #444;
+  .card,
+  .card * {
+  color: #f1f1f1 !important;
   }
 
-  .btn:hover {
-    background-color: #444;
-    color: #ffffff;
-  }
+
 
   .form-control {
     background-color: #2a2a2a;
@@ -47,4 +43,18 @@
     background-color: #2e7d32;
     color: #ffffff;
   }
+}
+
+
+[data-bs-theme="dark"] .btn-warning {
+  color: #000 !important;
+}
+
+[data-bs-theme="dark"] .btn-warning:hover {
+  color: #000 !important;
+}
+
+[data-bs-theme="dark"] .btn-warning,
+[data-bs-theme="dark"] .btn-warning i {
+  color: #000 !important;
 }

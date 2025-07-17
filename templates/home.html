@@ -1,18 +1,50 @@
 {% extends "_base.html" %}
 {% load static %}
-{% block title %}Home{% endblock title %}
+
+{% block title %}Home - BookPedia{% endblock %}
 
 {% block content %}
-    <h1>📚 Welcome to BookPedia</h1>
+<div class="container py-5">
 
-    <h2>This is our home page.</h2>
-    <h2>Check out our featured book below..</h2>
-    
-    <img class="bookcover" alt="Harry Potter Deathly Hallows" src="{% static 'images/harry_potter_deathly_hallows.jpg' %}">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome to BookPedia</h1>
+        <p class="lead text-muted">Discover your next great read!</p>
+    </div>
 
-    <p>Your one-stop destination for books!</p>
-        
-    
+    <!-- Featured Book -->
+    {% if featured_book %}
+    <div class="card mx-auto shadow-lg mb-5" style="max-width: 500px;">
+        <img src="{{ featured_book.cover.url }}" class="card-img-top" alt="{{ featured_book.title }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ featured_book.title }}</h5>
+            <p class="card-text">{{ featured_book.description|truncatewords:20 }}</p>
+            <a href="{% url 'book_detail' featured_book.pk %}" class="btn btn-primary">
+                <i class="bi bi-book-half"></i> Read More
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No featured book available right now.</p>
+    {% endif %}
 
+    <!-- Top Rated Books -->
+    <h3 class="text-center mt-5">Top Rated Books</h3>
+    <div class="row mt-4">
+        {% for book in top_books %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text text-truncate">{{ book.description|truncatewords:12 }}</p>
+                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary mt-auto">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
-{% endblock content %}
+</div>
+{% endblock %}
