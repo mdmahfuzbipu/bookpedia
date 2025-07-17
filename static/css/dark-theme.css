@@ -1,0 +1,50 @@
+[data-bs-theme="dark"] {
+  body {
+    background-color: #121212;
+    color: #f1f1f1;
+  }
+
+  a {
+    color: #90caf9;
+  }
+
+  a:hover {
+    color: #bbdefb;
+  }
+
+  .navbar {
+    background-color: #1f1f1f;
+  }
+
+  .card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333;
+  }
+
+  .btn {
+    background-color: #333;
+    color: #f1f1f1;
+    border-color: #444;
+  }
+
+  .btn:hover {
+    background-color: #444;
+    color: #ffffff;
+  }
+
+  .form-control {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #555;
+  }
+
+  .form-control::placeholder {
+    color: #bbbbbb;
+  }
+
+  .alert-success {
+    background-color: #2e7d32;
+    color: #ffffff;
+  }
+}
