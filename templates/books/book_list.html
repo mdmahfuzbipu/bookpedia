@@ -5,17 +5,27 @@
 {% block title %}Books{% endblock title %}
 
 {% block content %}
-  <h1 class="mb-4">All Books</h1>
+<div class="container mt-4">
 
-  <!-- Search -->
-  <form method="get" action="{% url 'search_results' %}" class="d-flex mb-4">
-    <input type="text" name="q" class="form-control me-2" placeholder="Search books..." style="max-width: 300px;">
-    <button class="btn btn-primary" type="submit">Search</button>
+  <h1 class="mb-4 text-center">
+    <i class="bi bi-book-half text-primary me-2"></i> Explore Our <span class="text-primary">Books</span>
+  </h1>
+
+  <!-- Search Bar -->
+  <form method="get" action="{% url 'search_results' %}" class="row g-2 mb-4 justify-content-center">
+    <div class="col-auto">
+      <input type="text" name="q" class="form-control" placeholder="Search books..." style="min-width: 250px;">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-outline-primary" type="submit">
+        <i class="bi bi-search"></i> Search
+      </button>
+    </div>
   </form>
 
   <!-- Category Filter -->
-  <form method="get" class="mb-4">
-    <select name="category" onchange="this.form.submit()" class="form-select" style="max-width: 300px;">
+  <form method="get" class="mb-4 text-center">
+    <select name="category" onchange="this.form.submit()" class="form-select d-inline-block" style="max-width: 300px;">
       <option value="">All Categories</option>
       {% for category in categories %}
         <option value="{{ category.slug }}" {% if category.slug == current_category %}selected{% endif %}>
@@ -29,51 +39,122 @@
   <div class="row">
     {% for book in book_list %}
       <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-            {% if book.cover %}
+        <div class="card h-100 shadow-sm border-0">
+          {% if book.cover %}
             <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
-            {% else %}
+          {% else %}
             <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="No cover available">
+          {% endif %}
+
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-primary">{{ book.title }}</h5>
+            <p class="card-text mb-1"><strong>Author:</strong> {{ book.author }}</p>
+
+            {% if book.category %}
+              <p class="card-text mb-2">
+                <span class="badge bg-secondary">{{ book.category.name }}</span>
+              </p>
             {% endif %}
 
-          <div class="card-body">
-            <h5 class="card-title">{{ book.title }}</h5>
-            <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
-            {% if book.category %}
-              <p class="card-text"><span class="badge bg-secondary">{{ book.category.name }}</span></p>
-            {% endif %}
-            <p class="card-text"><strong>Rating:</strong> {{ book.rating }}  
-                <span class="fs-5">{{ book.rating|star_rating }}</span>
-            </p>
+            <div class="mb-2">
+              <strong>Rating:</strong>
+              <span class="text-warning fs-6">{{ book.rating|star_rating }}</span>
+              <small class="text-muted">({{ book.rating }})</small>
+            </div>
+
             <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
-            <a href="{{ book.get_absolute_url }}" class="btn btn-sm btn-primary mt-2">View Details</a>
+
+            <div class="mt-auto">
+              <a href="{{ book.get_absolute_url }}" class="btn btn-sm btn-outline-primary w-100">
+                <i class="bi bi-book"></i> View Details
+              </a>
+            </div>
           </div>
         </div>
       </div>
     {% empty %}
-      <p>No books found in this category.</p>
+      <p class="text-center">No books found in this category.</p>
     {% endfor %}
-
-
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-            {% endif %}
-
-            <li class="page-item disabled">
-            <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
-            </li>
-
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-        </ul>
-      </nav>
-
   </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center flex-wrap">
+
+      <!-- First Page -->
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1{% if current_category %}&category={{ current_category }}{% endif %}" aria-label="First">
+            <i class="bi bi-chevron-double-left"></i>
+          </a>
+        </li>
+      {% endif %}
+
+      <!-- Previous -->
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}" aria-label="Previous">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-left"></i></span></li>
+      {% endif %}
+
+      <!-- Page Numbers -->
+      {% for i in page_obj.paginator.page_range %}
+        {% if i >= page_obj.number|add:'-2' and i <= page_obj.number|add:'2' %}
+          <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+            <a class="page-link" href="?page={{ i }}{% if current_category %}&category={{ current_category }}{% endif %}">{{ i }}</a>
+          </li>
+        {% elif i == 1 or i == page_obj.paginator.num_pages %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ i }}{% if current_category %}&category={{ current_category }}{% endif %}">{{ i }}</a>
+          </li>
+          {% if i == 1 and page_obj.number > 4 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+          {% endif %}
+          {% if i == page_obj.paginator.num_pages and page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <!-- Next -->
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}" aria-label="Next">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-right"></i></span></li>
+      {% endif %}
+
+      <!-- Last Page -->
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if current_category %}&category={{ current_category }}{% endif %}" aria-label="Last">
+            <i class="bi bi-chevron-double-right"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+
+    <!-- Jump to Page Dropdown -->
+    <form method="get" class="d-flex justify-content-center align-items-center gap-2 mt-2 flex-wrap">
+      <label for="jumpPage" class="form-label mb-0 fw-semibold">Jump to Page:</label>
+      <select id="jumpPage" name="page" class="form-select w-auto" onchange="this.form.submit()">
+        {% for i in page_obj.paginator.page_range %}
+          <option value="{{ i }}" {% if page_obj.number == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+      {% if current_category %}
+        <input type="hidden" name="category" value="{{ current_category }}">
+      {% endif %}
+    </form>
+  </nav>
+
+
+</div>
 {% endblock content %}

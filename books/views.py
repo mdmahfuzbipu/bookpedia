@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core import serializers
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
@@ -31,6 +32,8 @@ class BookListView(LoginRequiredMixin,ListView):
         context = super().get_context_data(**kwargs)
         context["categories"] = Category.objects.all()
         context["current_category"] = self.request.GET.get('category')
+        books = Book.objects.select_related('category').all()
+        context["book_data_json"] = serializers.serialize("json", books, use_natural_foreign_keys=True)
         return context
 
     def post(self, request, *args, **kwargs):

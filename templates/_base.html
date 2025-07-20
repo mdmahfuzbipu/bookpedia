@@ -27,7 +27,7 @@
 <body>
 
     
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'home' %}">BookPedia</a>
       
@@ -130,7 +130,7 @@
           <div class="row">
             <!-- Logo & Description -->
             <div class="col-md-4 mb-4">
-              <h5 class="text-uppercase fw-bold mb-3">BookPedia</h5>
+              <h5 class="text-uppercase fw-bold mb-3"><a href="{% url 'home' %}">BookPedia</a></h5>
               <p class="small text-light">
                 Your digital bookshelf to explore, track, and share amazing reads. Built with Django & Bootstrap.
               </p>
