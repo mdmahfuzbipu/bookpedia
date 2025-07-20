@@ -1,5 +1,5 @@
 body {
-    min-height: 75rem;
+    /* min-height: 75rem; */
     padding-top: 4.5rem;
 }
 
@@ -42,3 +42,36 @@ footer a:hover i.bi {
 footer {
   flex-shrink: 0;
 }
+
+.hover-lift {
+  transition: transform .2s;
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+
+.hero-section {
+  background: url('/static/images/library.png') center/cover no-repeat;
+  padding: 5rem 0;
+  position: relative;
+}
+
+.hero-section .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1;
+}
+
+
+
+
+.hero-section h1,
+.hero-section p {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+

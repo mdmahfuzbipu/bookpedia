@@ -1,56 +1,78 @@
 {% extends "_base.html" %}
 {% load static %}
+{% load star_tags %}
 
 {% block title %}Home - BookPedia{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+  <!-- Hero -->
+    <section class="hero-section text-light position-relative">
+    <div class="overlay"></div>
 
-    <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold">Welcome to <span class="text-primary">BookPedia</span></h1>
-        <p class="lead text-muted">Discover your next great read!</p>
+    <div class="container text-center position-relative" style="z-index:2;">
+        <h1 class="display-5 fw-bold">
+            <i class="bi bi-book-half text-primary me-2"></i> Welcome to <span class="text-primary">BookPedia</span>
+        </h1>
+        <p class="lead text-uppercase">Discover, rate, and explore the world's best books all in one place.</p>
+        <a href="{% url 'book_list' %}" class="btn btn-warning btn-lg mt-3">
+            <i class="bi bi-book"></i> Browse Books
+        </a>
     </div>
+    </section>
 
-    <!-- Featured Book -->
-    {% if featured_book %}
-    <div class="card mx-auto shadow-lg mb-5" style="max-width: 500px;">
-        <img src="{{ featured_book.cover.url }}" class="card-img-top" alt="{{ featured_book.title }}">
-        <div class="card-body text-center">
+
+
+  <!-- Featured Pick -->
+  {% if featured_book %}
+    <div class="container my-5">
+
+        <h2 class="fw-bold text-center mb-4 text-primary">
+            <i class="bi bi-lightbulb-fill text-warning me-2"></i> Today's Featured Pick
+        </h2>
+
+        <div class="card mx-auto shadow-lg" style="max-width:500px;">
+            <div class="position-relative">
+            <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Featured</span>
+            <img src="{{ featured_book.cover.url }}" class="card-img-top" alt="{{ featured_book.title }}">
+            </div>
+            <div class="card-body text-center">
             <h5 class="card-title">{{ featured_book.title }}</h5>
-            <p class="card-text"><strong>Rating:</strong> {{ book.rating }}  
-                <span class="fs-5">{{ book.rating|star_rating }}</span>
-            </p>
+            <p class="text-muted small mb-2">Rating: {{ featured_book.rating }} <span class="star-yellow">{{ featured_book.rating|star_rating }}</span></p>
+            <p class="text-muted small mb-1"><i class="bi bi-person"></i> {{ featured_book.author }}</p>
             <p class="card-text">{{ featured_book.description|truncatewords:20 }}</p>
             <a href="{% url 'book_detail' featured_book.pk %}" class="btn btn-primary">
                 <i class="bi bi-book-half"></i> Read More
             </a>
+            </div>
         </div>
     </div>
-    {% else %}
-    <p class="text-center text-muted">No featured book available right now.</p>
-    {% endif %}
+  {% endif %}
 
-    <!-- Top Rated Books -->
-    <h3 class="text-center mt-5">Top Rated Books</h3>
-    <div class="row mt-4">
+  <!-- Top Rated -->
+  <div class="container my-5 mx-2">
+  <h3 class="fw-bold text-center mb-5">
+    <i class="bi bi-star-fill text-warning"></i> Top Rated Books
+  </h3>
+    <div class="row g-4">
         {% for book in top_books %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text"><strong>Rating:</strong> {{ book.rating }}  
-                        <span class="fs-5">{{ book.rating|star_rating }}</span>
-                    </p>
-                    <p class="card-text text-truncate">{{ book.description|truncatewords:12 }}</p>
-                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary mt-auto">
-                        <i class="bi bi-eye"></i> View
-                    </a>
-                </div>
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm hover-lift">
+            <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
+            <div class="card-body d-flex flex-column">
+                <h6 class="card-title">{{ book.title }}</h6>
+                <p class="text-muted small mb-1">Rating: {{ book.rating }} <span class="star-yellow">{{ book.rating|star_rating }}</span></p>
+                <p class="text-muted small mb-1">
+                    <i class="bi bi-person"></i> {{ book.author }}
+                </p>
+                <p class="card-text text-truncate">{{ book.description|truncatewords:12 }}</p>
+                <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary mt-auto">
+                <i class="bi bi-eye"></i> View
+                </a>
+            </div>
             </div>
         </div>
         {% endfor %}
     </div>
+  </div>
 
-</div>
 {% endblock %}

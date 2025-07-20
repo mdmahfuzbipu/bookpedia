@@ -15,13 +15,13 @@ def star_rating(value):
         html = ""
 
         for _ in range(full_stars):
-            html += '<i class="bi bi-star-fill text-warning"></i> '
+            html += '<i class="bi bi-star-fill star-yellow text-warning"></i> '
 
         if half_star:
-            html += '<i class="bi bi-star-half text-warning"></i> '
+            html += '<i class="bi bi-star-half star-yellow text-warning"></i> '
 
         for _ in range(empty_stars):
-            html += '<i class="bi bi-star text-warning"></i> '
+            html += '<i class="bi bi-star star-yellow text-warning"></i> '
 
         return mark_safe(html)
     except:
