@@ -10,8 +10,8 @@
     <meta name="description" content="BookPedia - Browse and review your favorite books online.">
     <meta property="og:title" content="BookPedia" />
     <meta property="og:description" content="Your online book store to browse, search, and discover." />
-    <meta property="og:image" content="{% static 'img/logo.png' %}" />
-
+    <meta property="og:image" content="{% static 'images/logo.png' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,10 +22,15 @@
     <!--Static file link-->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link href="{% static 'css/dark-theme.css' %}" rel="stylesheet">
+
+    <!--favicon-->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+
   
 </head>
 <body>
 
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
     
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
@@ -62,6 +67,7 @@
                   name="q"
                   placeholder="Search books..."
                   aria-label="Search books"
+                  style="max-width: 500px;"
                 >
                 <button class="btn btn-outline-light" type="submit">
                   <i class="bi bi-search"></i>
@@ -101,7 +107,7 @@
 
 
 
-      <div class="container pt-3 mt-3">
+      <div class="container pt-3 mt-3" id="main-content">
           {% if messages %}
               {% for message in messages %}
                   <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert">
@@ -130,7 +136,7 @@
           <div class="row">
             <!-- Logo & Description -->
             <div class="col-md-4 mb-4">
-              <h5 class="text-uppercase fw-bold mb-3"><a href="{% url 'home' %}">BookPedia</a></h5>
+              <h5 class="text-uppercase fw-bold mb-3"><a href="{% url 'home' %}" class="text-primary text-decoration-none">BookPedia</a></h5>
               <p class="small text-light">
                 Your digital bookshelf to explore, track, and share amazing reads. Built with Django & Bootstrap.
               </p>
@@ -174,6 +180,41 @@
         </div>
       </footer>
 
+    
+
+    
+    <!-- Chatbot container -->
+    <div id="chatbot-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050; max-width: 350px;">
+    <!-- Chat toggle button -->
+    <button id="chatbot-toggle" aria-label="Open chat" title="Chat with us"
+      class="btn btn-warning rounded-circle shadow d-flex align-items-center justify-content-center"
+      style="width: 56px; height: 56px; font-size: 24px;">
+      <i class="bi bi-chat-dots-fill"></i>
+    </button>
+
+    <!-- Chat window (hidden initially) -->
+    <div id="chatbot-window" class="card shadow" style="display: none; margin-top: 10px;">
+      <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+        <strong class="bookpedia-header-text">Chat with BookPedia</strong>
+        <button id="chatbot-close" aria-label="Close chat" class="btn btn-sm btn-outline-dark">&times;</button>
+      </div>
+      <div class="card-body bg-light text-dark" style="height: 300px; overflow-y: auto;">
+        <!-- Chat messages will appear here -->
+        <div id="chatbot-messages" class="mb-3 text-body" style="font-size: 0.9rem;"></div>
+
+        <!-- Input -->
+        <div class="input-group">
+          <input id="chatbot-input" type="text" class="form-control" placeholder="Type your message..." aria-label="Type your message" />
+          <button id="chatbot-send" class="btn btn-warning" aria-label="Send message">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+
 
 
 
@@ -189,6 +230,153 @@
     
 
     <script>
+
+          /* Chatbot script */
+
+
+      document.addEventListener('DOMContentLoaded', function () {
+      const toggleBtn = document.getElementById('chatbot-toggle');
+      const closeBtn = document.getElementById('chatbot-close');
+      const chatWindow = document.getElementById('chatbot-window');
+      const sendBtn = document.getElementById('chatbot-send');
+      const input = document.getElementById('chatbot-input');
+      const messages = document.getElementById('chatbot-messages');
+      addBotMessage("Hi! What category of books do you like?");
+
+      // Open chat window
+      toggleBtn.addEventListener('click', function () {
+        if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+          chatWindow.style.display = 'block';
+          setTimeout(() => {
+            chatWindow.style.opacity = '1';
+            chatWindow.style.transform = 'translateY(0)';
+          }, 10);
+        } else {
+          chatWindow.style.opacity = '0';
+          chatWindow.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            chatWindow.style.display = 'none';
+          }, 300); // match the transition time
+        }
+      });
+
+
+      // Close chat window
+      closeBtn.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+        toggleBtn.style.display = 'inline-block';
+        messages.innerHTML = '';
+        input.value = '';
+      });
+
+      // Add bot message helper
+      function addBotMessage(text) {
+        const msg = document.createElement('div');
+        msg.classList.add('message', 'bot', 'mb-2', 'p-2', 'rounded');
+        msg.textContent = text;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+
+      // Add user message helper
+      function addUserMessage(text) {
+        const msg = document.createElement('div');
+        msg.classList.add('message', 'user', 'mb-2', 'p-2', 'rounded', 'text-end');
+        msg.textContent = text;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+
+      // Simple response logic based on category input
+      function getBookRecommendation(userInput) {
+        const categoryMap = {
+          "science & math": ["science", "math", "science-math"],
+          "medical books": ["medical", "medicine", "medical-books"],
+          "history": ["history"],
+          "mystery, thriller & suspense": ["mystery", "thriller", "suspense", "mystery-thriller-suspense"],
+          "science fiction & fantasy": ["sci-fi", "science fiction", "fantasy", "science-fiction-fantasy"],
+          "computers & technology": ["computer", "technology", "computers-technology"]
+        };
+
+        const recommendations = {
+          "science & math": [
+            "You might enjoy 'A Brief History of Time' by Stephen Hawking — a fascinating journey through space and time.",
+            "Check out 'The Elegant Universe' by Brian Greene — a brilliant introduction to string theory.",
+            "Read 'Thinking, Fast and Slow' by Daniel Kahneman — insights into how we think and make decisions."
+          ],
+          "medical books": [
+            "Try 'The Emperor of All Maladies' by Siddhartha Mukherjee — a biography of cancer.",
+            "Consider 'Being Mortal' by Atul Gawande — a deep look into aging, death, and the medical field.",
+            "Read 'When Breath Becomes Air' by Paul Kalanithi — a powerful memoir by a neurosurgeon facing terminal illness."
+          ],
+          "history": [
+            "Consider 'Sapiens: A Brief History of Humankind' by Yuval Noah Harari — an engaging look at human evolution.",
+            "Read 'Guns, Germs, and Steel' by Jared Diamond — the fates of human societies through geography and biology.",
+            "Explore 'A People's History of the United States' by Howard Zinn — history from the bottom up."
+          ],
+          "mystery, thriller & suspense": [
+            "Check out 'Gone Girl' by Gillian Flynn — a gripping and twisty psychological thriller.",
+            "Read 'The Girl with the Dragon Tattoo' by Stieg Larsson — suspenseful and darkly captivating.",
+            "Try 'The Da Vinci Code' by Dan Brown — a fast-paced mystery packed with codes and secrets."
+          ],
+          "science fiction & fantasy": [
+            "Dive into 'Dune' by Frank Herbert — a sci-fi epic of politics, religion, and survival.",
+            "Read 'Ender's Game' by Orson Scott Card — a classic military sci-fi adventure.",
+            "Explore 'The Name of the Wind' by Patrick Rothfuss — a poetic and immersive fantasy tale."
+          ],
+          "computers & technology": [
+            "Explore 'The Innovators' by Walter Isaacson — the history of the digital revolution and its pioneers.",
+            "Read 'Clean Code' by Robert C. Martin — tips for writing readable and maintainable software.",
+            "Try 'The Phoenix Project' by Gene Kim — a novel about IT, DevOps, and business transformation."
+          ]
+        };
+
+
+        const input = userInput.toLowerCase();
+        for (const [category, keywords] of Object.entries(categoryMap)) {
+          if (keywords.some(keyword => input.includes(keyword))) {
+            const recList = recommendations[category];
+            return recList[Math.floor(Math.random() * recList.length)];
+          }
+        }
+
+        return "Sorry, I don't have recommendations for that category. Try categories like Science, History, Medical, or Technology.";
+      }
+
+
+
+
+      // Handle send message
+      function handleSend() {
+        const userText = input.value.trim();
+        if (userText === '') return;
+
+        addUserMessage(userText);
+        input.value = '';
+
+        // Bot replies
+        setTimeout(() => {
+          const response = getBookRecommendation(userText);
+          addBotMessage(response);
+        }, 800);
+      }
+
+      sendBtn.addEventListener('click', handleSend);
+      input.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleSend();
+        }
+      });
+    });
+
+
+
+
+      /*  Theme change script */
+
       document.addEventListener("DOMContentLoaded", function () {
         const toggleBtn = document.getElementById("theme-toggle");
         const themeIcon = document.getElementById("theme-icon");
@@ -212,7 +400,8 @@
           themeIcon.className = newTheme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-fill";
         });
       });
-    </script>
+
+  </script>
 
 
 </body>

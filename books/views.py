@@ -36,20 +36,6 @@ class BookListView(LoginRequiredMixin,ListView):
         context["book_data_json"] = serializers.serialize("json", books, use_natural_foreign_keys=True)
         return context
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.book = self.object
-            review.author = request.user
-            review.save()
-            messages.success(request, "Review submitted successfully!")
-            return redirect("book_detail", pk=self.object.pk)
-        context = self.get_context_data()
-        context["form"] = form
-        return self.render_to_response(context)
-
 
 class BookDetailView(
     LoginRequiredMixin,
@@ -66,6 +52,21 @@ class BookDetailView(
         context = super().get_context_data(**kwargs)
         context["form"] = ReviewForm()
         return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book = self.object
+            review.author = request.user
+            review.save()
+            messages.success(request, "Review submitted successfully!")
+            return redirect("book_detail", pk=self.object.pk)
+        context = self.get_context_data()
+        context["form"] = form
+        return self.render_to_response(context)
+
 
 
 class SearchResultsListView(ListView):

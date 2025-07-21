@@ -75,3 +75,46 @@ footer {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 }
 
+
+#theme-toggle:hover {
+  background-color: #ffc107;
+  color: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+.visually-hidden-focusable {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.visually-hidden-focusable:focus,
+.visually-hidden-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  z-index: 10000;
+}
+
+  
+#chatbot-window {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.bookpedia-header-text {
+  color: #000 !important; 
+}
+
+#chatbot-messages .message.user {
+  background-color: #4e8cff;
+  color: #fff;
+}

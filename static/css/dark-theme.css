@@ -62,3 +62,48 @@
 [data-bs-theme="dark"] .btn-warning i {
   color: #000 !important;
 }
+
+
+
+
+/* Chatbot styling for dark mode */
+/* Whole window */
+[data-bs-theme="dark"] #chatbot-window {
+  background-color: #1f1f1f !important;
+  color: #ffffff !important;
+  border: 1px solid #444;
+}
+
+[data-bs-theme="dark"] .bookpedia-header-text {
+  color: #000 !important;
+}
+
+/* Bot message */
+[data-bs-theme="dark"] #chatbot-messages .message.bot {
+  background-color: #333;
+  color: #fff;
+}
+
+/* User message */
+[data-bs-theme="dark"] #chatbot-messages .message.user {
+  background-color: #4e8cff;
+  color: #fff;
+}
+
+/* Input box */
+[data-bs-theme="dark"] #chatbot-window input {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+/* Send button
+[data-bs-theme="dark"] #chatbot-window button {
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #666;
+} */
+
+[data-bs-theme="dark"] #chatbot-close {
+  color: #000 !important;
+}
