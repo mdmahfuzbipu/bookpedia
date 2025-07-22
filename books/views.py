@@ -16,7 +16,7 @@ from .forms import ReviewForm
 
 class BookListView(LoginRequiredMixin,ListView):
     model = Book
-    paginate_by = 6
+    paginate_by = 8
     context_object_name = "book_list"
     template_name = "books/book_list.html"
     login_url = "account_login"
