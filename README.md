@@ -97,27 +97,43 @@ docker-compose exec web python manage.py test
 ## 📸 Screenshots
 
 ### 🏡 Home Page View  
+A hero banner page maintaining Bootstrap 5 layout features.
 ![Home Page](screenshots/home.png)
 
 ### 📚 Book List View  
+Displaying all available books in responsive card layout with pagination
 ![Book List](screenshots/booklist1.png)
 
+### 🔍 Search Page View  
+Efficient search functionality implemented using Django Q objects.  
+![Search Page](screenshots/searchpage.png)
+
 ### 📖 Book Detail View  
+Detailed view of each book with rating and description
 ![Book Detail](screenshots/bookdetail1.png)
 
 ### ✍️ Book Review View  
+Submit and view reviews with clean layout and styling
 ![Book Review](screenshots/bookdetail2.png)
 
+### 🤖 Chatbot View  
+Integrated chatbot for better user interaction and support. 
+![Chatbot](screenshots/chatbot2.png)
+
 ### ℹ️ About Page View  
+Structured with clean sections and styled using Bootstrap 5 utilities
 ![About Page](screenshots/aboutpage1.png)
 
 ### 🔻 Footer View  
+Minimal and clean footer with dark mode support
 ![Footer](screenshots/footer.png)
 
 ### 🤍 White Theme   
+A clean light-mode version for improved accessibility and readability
 ![White Theme](screenshots/white_theme.png)
 
 ### 📱 Mobile Responsiveness
+Fully responsive design ensuring smooth experience on mobile devices
 ![Mobile View](screenshots/mobileview1.png)
 
 
